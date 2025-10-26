@@ -27,18 +27,19 @@
 python -m venv sage-env
 sage-env\Scripts\activate      # Windows
 ```
-2️⃣ Встановіть SageMath
+### 2️⃣ Встановіть SageMath
+```bash
 pip install sagemath
-
-3️⃣ Запуск SageMath у терміналі
+```
+### 3️⃣ Запуск SageMath у терміналі
+```bash
 sage
+```
 
+---
 
-Або запустіть Jupyter Notebook:
-
-sage -n jupyter
-
-🧱 Структура проєкту
+## 🧱 Структура проєкту
+```
 project_root/
 │
 ├── student1_k_shortest.py       # Реалізація алгоритму Єна (Студент 1)
@@ -50,6 +51,9 @@ project_root/
 │
 ├── README.md                    # Цей файл
 └── requirements.txt             # Залежності (sagemath, streamlit, pytest)
+```
+
+---
 
 🧩 Опис модулів
 1. student1_k_shortest.py
