@@ -20,20 +20,28 @@
 
 ---
 
-## ⚙️ Встановлення та запуск
+## ⚙️ Встановлення SageMath
 
-### 1️⃣ Створіть віртуальне середовище
+### 1️⃣Для встановлення **SageMath** перейдіть сюди
+Для скачування SageMath перейдіть [тут](https://www.sagemath.org/download.html)
+
+### 2️⃣ Далі обираєте будь-яку країну Європи, н-д Британію
+
+### 3️⃣ Далі обираєте `Microsoft Windows` і обираєте `SageMath-9.3-Installer-v0.6.3.exe`
+
+---
+
+## ⚙️ Запуск програми у SageMath Shell
+
+### 1️⃣Для цього перейдіть в папку, де лежить файл з `main.py`
 ```bash
-python -m venv sage-env
-sage-env\Scripts\activate      # Windows
+  cd "Шлях до папки з файлом"
 ```
-### 2️⃣ Встановіть SageMath
+
+### 2️⃣Запуск файлу `main.py`
+
 ```bash
-pip install sagemath
-```
-### 3️⃣ Запуск SageMath у терміналі
-```bash
-sage
+  sage main.py
 ```
 
 ---
