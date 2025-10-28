@@ -63,16 +63,17 @@
 ```
 project_root/
 │
-├── k_shortest.py                # Реалізація алгоритму Єна (Студент 1)
-├── cycles.py                    # Реалізація пошуку циклів (Студент 2)
-├── integration.py               # Інтеграція та тести (Студент 3)
+├── k_shortest.pyx                 # Реалізація алгоритму Єна (Студент 1)
+├── cycles.py                      # Реалізація пошуку циклів (Студент 2)
+├── ui.py                          # Інтерфейс користувача (Студент 3)
 │
-├── sample_graphs.py             # Тестові графи
-├── main.py                      # Простий UI для запуску алгоритмів
+├── sample_graphs.py               # Тестові графи
+├── main.py                        # Простий UI для запуску алгоритмів
 │
-├── README.md                    # Файл 
-└── requirements.txt             # Залежності (sagemath, streamlit, pytest)
-└── .gitignore                   # Файл для ігнорування вказаних файлів та директорій
+├── README.md                     
+└── requirements.txt               # Залежності (sagemath, streamlit, pytest)
+└── .gitignore                     # Файл для ігнорування вказаних файлів та директорій
+└── k_shortest.cp313-win_amd64.pyd # Бінарний файл, який Python може імпортувати напряму
 ```
 
 ---

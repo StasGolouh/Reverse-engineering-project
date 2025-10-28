@@ -7,7 +7,6 @@ def dijkstra_nx(graph, source, target):
 
     while queue:
         cost, node, path = heappop(queue)
-
         if node in seen:
             continue
 
@@ -28,33 +27,22 @@ def dijkstra_nx(graph, source, target):
     return float("inf"), []
 
 
-#  ФУНКЦІЯ 2: ДОПОМІЖНА ФУНКЦІЯ ДЛЯ ПІДРАХУНКУ ВАРТОСТІ
-
 def get_path_cost(graph, path):
-    """Допоміжна функція для ручного підрахунку вартості шляху."""
+    """Підрахунок вартості шляху."""
     total_cost = 0
-
     for i in range(len(path) - 1):
         u = path[i]
         v = path[i + 1]
-
         if graph.has_edge(u, v):
             total_cost += graph[u][v].get('weight', 1)
         else:
             return float('inf')
-
     return total_cost
 
 
-#  ФУНКЦІЯ 3: ОСНОВНИЙ АЛГОРИТМ ЄНА (СПРОЩЕНА ВЕРСІЯ)
-
-def find_k_shortest_paths(graph, source, target, K):
-    """
-    Алгоритм Єна для пошуку K найкоротших простих шляхів.
-    (Версія зі звичайним списком кандидатів замість купи)
-    """
+def find_k_shortest_paths(graph, source, target, int K):
+    """Алгоритм Єна"""
     final_paths = []
-
     candidate_paths = []
 
     cost, path = dijkstra_nx(graph, source, target)
@@ -64,7 +52,6 @@ def find_k_shortest_paths(graph, source, target, K):
     final_paths.append((cost, path))
 
     for k in range(1, K):
-
         if not final_paths:
             break
 
@@ -91,9 +78,7 @@ def find_k_shortest_paths(graph, source, target, K):
 
             if spur_path:
                 total_path = root_path[:-1] + spur_path
-
                 total_cost = get_path_cost(graph, total_path)
-
                 candidate = (total_cost, total_path)
 
                 if candidate not in candidate_paths and candidate not in final_paths:
@@ -103,9 +88,7 @@ def find_k_shortest_paths(graph, source, target, K):
             break
 
         candidate_paths.sort()
-
         best_candidate = candidate_paths.pop(0)
-
         final_paths.append(best_candidate)
 
     return final_paths
