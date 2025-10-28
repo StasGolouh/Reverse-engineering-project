@@ -1,4 +1,5 @@
 import networkx as nx
+import k_shortest
 from ui import SimpleGraphUI
 from typing import List, Any, Tuple
 
@@ -44,16 +45,18 @@ def _dfs_find_cycles(G, current, parent, path, cycles_list, visited):
     visited.add(current)
 
 # --- K найкоротших шляхів ---
-def find_k_shortest_paths(edges: List[Tuple[Any, Any, float]], start, end, K):
+def find_k_shortest(edges, start, end, K):
     G = nx.DiGraph()
     G.add_weighted_edges_from(edges)
-    # Приклад: тут можна викликати власний k_shortest алгоритм
-    try:
-        length, path = nx.single_source_dijkstra(G, start, end)
-        return [(length, path)]
-    except nx.NetworkXNoPath:
-        return []
+
+    result = k_shortest.find_k_shortest_paths(G, start, end, K)
+
+    print("\nРезультат Алгоритму Єна:")
+    for i, (cost, path) in enumerate(result, start=1):
+        print(f"  {i}-й шлях: {' -> '.join(path)}, довжина = {cost}")
+
+    return result
 
 if __name__ == "__main__":
-    ui = SimpleGraphUI(find_k_shortest_paths, find_all_cycles)
+    ui = SimpleGraphUI(find_k_shortest, find_all_cycles)
     ui.run()
