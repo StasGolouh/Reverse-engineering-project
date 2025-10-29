@@ -2,12 +2,12 @@ import unittest
 import sys
 import io
 
-# Імпортуємо функції з вашого файлу
+# Імпортуємо функції з вашого файлу 'main.py'
 try:
     from main import find_all_cycles, find_k_shortest
 except ImportError:
-    print("Помилка: Не вдалося імпортувати 'graph_logic'.")
-    print("Переконайтеся, що ваш основний файл називається 'graph_logic.py' і знаходиться в тій самій директорії.")
+    print("Помилка: Не вдалося імпортувати 'main'.")
+    print("Переконайтеся, що ваш основний файл називається 'main.py' і знаходиться в тій самій директорії.")
     sys.exit(1)
 
 
@@ -122,9 +122,6 @@ class TestGraphLogic(unittest.TestCase):
 
     # --- Тести для find_k_shortest ---
 
-    # Ми ВИДАЛИЛИ методи setUp та tearDown,
-    # оскільки вони більше не потрібні
-
     def test_k_shortest_simple_path(self):
         """Перевіряє знаходження K найкоротших шляхів у простому графі."""
         print(f"\n--- {self.id()} ---")
@@ -133,10 +130,11 @@ class TestGraphLogic(unittest.TestCase):
             ('C', 'D', 1), ('B', 'C', 3)
         ]
         start, end, K = 'A', 'D', 3
+        # ВИПРАВЛЕНО: очікуємо int (6, 7, 11) замість float (6.0, 7.0, 11.0)
         expected = [
-            (6.0, ['A', 'B', 'C', 'D']),
-            (7.0, ['A', 'B', 'D']),
-            (11.0, ['A', 'C', 'D'])
+            (6, ['A', 'B', 'C', 'D']),
+            (7, ['A', 'B', 'D']),
+            (11, ['A', 'C', 'D'])
         ]
 
         print(f"Вхід (ребра): {edges}")
@@ -170,10 +168,11 @@ class TestGraphLogic(unittest.TestCase):
             ('C', 'D', 1), ('B', 'C', 3)
         ]
         start, end, K = 'A', 'D', 5
+        # ВИПРАВЛЕНО: очікуємо int (6, 7, 11) замість float (6.0, 7.0, 11.0)
         expected = [
-            (6.0, ['A', 'B', 'C', 'D']),
-            (7.0, ['A', 'B', 'D']),
-            (11.0, ['A', 'C', 'D'])
+            (6, ['A', 'B', 'C', 'D']),
+            (7, ['A', 'B', 'D']),
+            (11, ['A', 'C', 'D'])
         ]
 
         print(f"Вхід (ребра): {edges}")
@@ -190,7 +189,7 @@ class TestGraphLogic(unittest.TestCase):
         print(f"\n--- {self.id()} ---")
         edges = [('A', 'B', 2), ('B', 'A', 3)]
         start, end, K = 'A', 'A', 2
-        expected = [(0, ['A'])]
+        expected = [(0, ['A'])] # Цей тест вже був правильний
 
         print(f"Вхід (ребра): {edges}")
         print(f"Вхід (start, end, K): ('{start}', '{end}', {K})")
