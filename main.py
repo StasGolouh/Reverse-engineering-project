@@ -11,7 +11,6 @@ def find_all_cycles(edges: List[Tuple[Any, Any, float]]) -> List[List[Any]]:
     for u, v, _ in edges:
         G.add_edge(u, v)
 
-    # 2. !!! ВИПРАВЛЕННЯ: Перетворюємо nx.Graph на словник суміжності (dict) !!!
     G_dict = nx.to_dict_of_lists(G)
 
     # 3. Викликаємо функцію з модуля cycles.py, яка очікує dict
