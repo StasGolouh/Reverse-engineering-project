@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
-from tkinter.font import Font
+
 
 
 class SimpleGraphUI:
