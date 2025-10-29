@@ -27,7 +27,8 @@
 - Далі обираєте `Modify`
 
 ### 2️⃣ Після обираєте ось цей пункт і завантажуєте його:
-<img width="524" height="150" alt="image" src="https://github.com/user-attachments/assets/67fd7224-2cbc-4d49-870a-a00241b4bd4e" />
+<img width="525" height="136" alt="image" src="https://github.com/user-attachments/assets/2a8fb1d7-c616-44af-86d9-0208cbffc2f3" />
+
 
 ---
 
