@@ -3,12 +3,12 @@ import sys
 import io
 
 # Імпортуємо функції з вашого файлу
-# Переконайтеся, що ваш файл називається 'graph_logic.py'
+# Переконайтеся, що ваш файл називається 'main.py'
 try:
-    from graph_logic import find_all_cycles, find_k_shortest
+    from main import find_all_cycles, find_k_shortest
 except ImportError:
     print("Помилка: Не вдалося імпортувати 'graph_logic'.")
-    print("Переконайтеся, що ваш основний файл називається 'graph_logic.py' і знаходиться в тій самій директорії.")
+    print("Переконайтеся, що ваш основний файл називається 'main.py' і знаходиться в тій самій директорії.")
     sys.exit(1)
 
 
