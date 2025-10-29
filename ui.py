@@ -140,31 +140,49 @@ class SimpleGraphUI:
         # Встановлюємо фокус на перше поле вводу
         self.from_entry.focus_set()
 
-    #
-    # --- ЛОГІКА (ЗАЛИШИЛАСЯ БЕЗ ЗМІН) ---
-    #
-
     def add_edge(self):
         u = self.from_entry.get().strip()
         v = self.to_entry.get().strip()
         w = self.weight_entry.get().strip()
+
         if not u or not v or not w:
             messagebox.showwarning("Увага", "Заповніть усі поля!")
             return
+
+        if u == v:
+            messagebox.showerror("Помилка", "Початкова і кінцева вершини не можуть бути однаковими.")
+            return
+
+        try:
+            if u.lstrip('-').isdigit() and int(u) < 0:
+                messagebox.showerror("Помилка", f"Вершина '{u}' не може бути від’ємною.")
+                return
+            if v.lstrip('-').isdigit() and int(v) < 0:
+                messagebox.showerror("Помилка", f"Вершина '{v}' не може бути від’ємною.")
+                return
+        except ValueError:
+            pass  # якщо це не числа, пропускаємо
+
         try:
             w = float(w)
+            if w <= 0:
+                messagebox.showerror("Помилка", "Вага ребра має бути додатною (> 0).")
+                return
         except ValueError:
             messagebox.showerror("Помилка", "Вага має бути числом.")
             return
+
         self.edges.append((u, v, w))
+<<<<<<< Updated upstream
         self.edges_listbox.insert(tk.END, f"{u} - {v} (вага={w})")
+=======
+        self.edges_listbox.insert(tk.END, f"{u} -- {v} (вага={w})")
+>>>>>>> Stashed changes
 
         # Очищуємо поля
         self.from_entry.delete(0, tk.END)
         self.to_entry.delete(0, tk.END)
         self.weight_entry.delete(0, tk.END)
-
-        # Повертаємо фокус на перше поле
         self.from_entry.focus_set()
 
     def remove_edge(self):
@@ -177,10 +195,14 @@ class SimpleGraphUI:
     def on_submit(self):
         start = self.start_entry.get().strip()
         end = self.end_entry.get().strip()
+
         try:
             K = int(self.k_entry.get().strip())
+            if K <= 0:
+                messagebox.showerror("Помилка", "K має бути додатним числом (> 0).")
+                return
         except ValueError:
-            messagebox.showerror("Помилка", "K має бути числом")
+            messagebox.showerror("Помилка", "K має бути числом.")
             return
 
         if not start:
@@ -193,6 +215,30 @@ class SimpleGraphUI:
             return
 
         try:
+            if start.lstrip('-').isdigit() and int(start) < 0:
+                messagebox.showerror("Помилка", f"Початкова вершина '{start}' не може бути від’ємною.")
+                return
+            if end.lstrip('-').isdigit() and int(end) < 0:
+                messagebox.showerror("Помилка", f"Кінцева вершина '{end}' не може бути від’ємною.")
+                return
+        except ValueError:
+            pass
+
+        vertices = set()
+        for u, v, _ in self.edges:
+            vertices.add(u)
+            vertices.add(v)
+
+        if start not in vertices:
+            messagebox.showerror("Помилка", f"Початкової точки '{start}' немає в графі.")
+            return
+
+        if end not in vertices:
+            messagebox.showerror("Помилка", f"Кінцевої точки '{end}' немає в графі.")
+            return
+
+        # --- Запуск алгоритму ---
+        try:
             result = self.callback_paths(self.edges, start, end, K)
             self.output.delete("1.0", tk.END)
             self.output.insert(tk.END, f"--- {K} найкоротших шляхів з {start} в {end} ---\n\n")
@@ -200,7 +246,11 @@ class SimpleGraphUI:
                 self.output.insert(tk.END, "Шляхи не знайдено.\n")
             else:
                 for i, (cost, path) in enumerate(result, start=1):
+<<<<<<< Updated upstream
                     self.output.insert(tk.END, f"{i}-й шлях: {' - '.join(path)}\n   Довжина = {cost}\n")
+=======
+                    self.output.insert(tk.END, f"{i}-й шлях: {' -- '.join(path)}\n   Довжина = {cost}\n")
+>>>>>>> Stashed changes
         except Exception as e:
             messagebox.showerror("Помилка", str(e))
 
@@ -218,7 +268,11 @@ class SimpleGraphUI:
             else:
                 for i, cycle in enumerate(cycles, start=1):
                     # Додаємо перший елемент в кінець для замкненості
+<<<<<<< Updated upstream
                     path_str = " -> ".join(map(str, cycle)) + " - " + str(cycle[0])
+=======
+                    path_str = " -> ".join(map(str, cycle)) + " -- " + str(cycle[0])
+>>>>>>> Stashed changes
                     self.output.insert(tk.END, f"{i}-й цикл: {path_str}\n")
         except Exception as e:
             messagebox.showerror("Помилка", str(e))
