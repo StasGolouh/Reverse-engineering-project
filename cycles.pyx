@@ -16,7 +16,7 @@ def find_all_cycles(G: Dict[Any, List[Any]]) -> List[List[Any]]:
         if start_node not in visited_global:
             _dfs_find_cycles(G, start_node, None, [], all_cycles, visited_global)
 
-    # === ВИПРАВЛЕНА НОРМАЛІЗАЦІЯ ===
+    # Нормалізація циклів
     unique_cycles = []
     seen = set()
     for cycle in all_cycles:

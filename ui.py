@@ -240,7 +240,8 @@ class SimpleGraphUI:
                 self.output.insert(tk.END, "Циклів не знайдено.\n")
             else:
                 for i, cycle in enumerate(cycles, start=1):
-                    path_str = " -> ".join(map(str, cycle)) + " -- " + str(cycle[0])
+                    # Додаємо перший елемент в кінець для замкненості
+                    path_str = " - ".join(map(str, cycle)) + " - " + str(cycle[0])
                     self.output.insert(tk.END, f"{i}-й цикл: {path_str}\n")
         except Exception as e:
             messagebox.showerror("Помилка", str(e))
