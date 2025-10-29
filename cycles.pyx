@@ -50,23 +50,23 @@ def _dfs_find_cycles(G, current, parent, path, cycles_list, visited):
     path.pop()
     visited.add(current)
 
-# --- Тестування (без Sage) ---
-if __name__ == "__main__":
-    import networkx as nx
-
-    print("Тестуємо пошук циклів (без SageMath)\n" + "=" * 50)
-
-    # Трикутник
-    G1 = nx.Graph()
-    G1.add_edges_from([(0, 1), (1, 2), (2, 0)])
-    print("Трикутник:", find_all_cycles(G1))
-
-    # Квадрат
-    G2 = nx.Graph()
-    G2.add_edges_from([(0, 1), (1, 2), (2, 3), (3, 0)])
-    print("Квадрат:", find_all_cycles(G2))
-
-    # Метелик (два трикутники)
-    G3 = nx.Graph()
-    G3.add_edges_from([(0, 1), (1, 2), (2, 0), (2, 3), (3, 4), (4, 2)])
-    print("Метелик:", find_all_cycles(G3))
+# # --- Тестування (без Sage) ---
+# if __name__ == "__main__":
+#     import networkx as nx
+#
+#     print("Тестуємо пошук циклів (без SageMath)\n" + "=" * 50)
+#
+#     # Трикутник
+#     G1 = nx.Graph()
+#     G1.add_edges_from([(0, 1), (1, 2), (2, 0)])
+#     print("Трикутник:", find_all_cycles(G1))
+#
+#     # Квадрат
+#     G2 = nx.Graph()
+#     G2.add_edges_from([(0, 1), (1, 2), (2, 3), (3, 0)])
+#     print("Квадрат:", find_all_cycles(G2))
+#
+#     # Метелик (два трикутники)
+#     G3 = nx.Graph()
+#     G3.add_edges_from([(0, 1), (1, 2), (2, 0), (2, 3), (3, 4), (4, 2)])
+#     print("Метелик:", find_all_cycles(G3))
