@@ -2,50 +2,24 @@ import networkx as nx
 import k_shortest
 from ui import SimpleGraphUI
 from typing import List, Any, Tuple
+from cycles import find_all_cycles as _find_all_cycles_func
 
+# Обгортка для find_all_cycles, яка створює неорієнтований граф (nx.Graph)
+# з вхідного списку ребер.
 def find_all_cycles(edges: List[Tuple[Any, Any, float]]) -> List[List[Any]]:
-    G = nx.Graph()
+    G = nx.Graph() # Використовуємо nx.Graph для неорієнтованого графа
     for u, v, _ in edges:
         G.add_edge(u, v)
 
-    all_cycles = []
-    visited = set()
-    for start_node in G.nodes():
-        if start_node not in visited:
-            _dfs_find_cycles(G, start_node, None, [], all_cycles, visited)
+    # 2. !!! ВИПРАВЛЕННЯ: Перетворюємо nx.Graph на словник суміжності (dict) !!!
+    G_dict = nx.to_dict_of_lists(G)
 
-    # Видаляємо дублікати
-    unique_cycles = []
-    seen = set()
-    for cycle in all_cycles:
-        min_idx = cycle.index(min(cycle))
-        rotated = cycle[min_idx:] + cycle[:min_idx]
-        rev_rotated = list(reversed(rotated))
-        min_rotated = min(rotated, rev_rotated, key=lambda x: tuple(x))
-        cycle_tuple = tuple(min_rotated)
-        if cycle_tuple not in seen:
-            seen.add(cycle_tuple)
-            unique_cycles.append(list(min_rotated))
-
-    return unique_cycles
-
-def _dfs_find_cycles(G, current, parent, path, cycles_list, visited):
-    path.append(current)
-    for neighbor in G.neighbors(current):
-        if neighbor == parent:
-            continue
-        if neighbor in path:
-            cycle_start_idx = path.index(neighbor)
-            cycle = path[cycle_start_idx:]
-            cycles_list.append(cycle)
-            continue
-        if neighbor not in visited:
-            _dfs_find_cycles(G, neighbor, current, path, cycles_list, visited)
-    path.pop()
-    visited.add(current)
+    # 3. Викликаємо функцію з модуля cycles.py, яка очікує dict
+    return _find_all_cycles_func(G_dict)
 
 # --- K найкоротших шляхів ---
 def find_k_shortest(edges, start, end, K):
+    # K-найкоротших шляхів зазвичай працює на орієнтованому графі
     G = nx.DiGraph()
     G.add_weighted_edges_from(edges)
 
@@ -58,5 +32,6 @@ def find_k_shortest(edges, start, end, K):
     return result
 
 if __name__ == "__main__":
+    # Тепер ui використовує імпортовану обгортку для циклів
     ui = SimpleGraphUI(find_k_shortest, find_all_cycles)
     ui.run()

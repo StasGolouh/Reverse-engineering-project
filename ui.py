@@ -1,8 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
 
-
-
 class SimpleGraphUI:
     def __init__(self, callback_paths, callback_cycles):
         self.callback_paths = callback_paths
@@ -159,7 +157,7 @@ class SimpleGraphUI:
             messagebox.showerror("Помилка", "Вага має бути числом.")
             return
         self.edges.append((u, v, w))
-        self.edges_listbox.insert(tk.END, f"{u} -> {v} (вага={w})")
+        self.edges_listbox.insert(tk.END, f"{u} - {v} (вага={w})")
 
         # Очищуємо поля
         self.from_entry.delete(0, tk.END)
@@ -202,7 +200,7 @@ class SimpleGraphUI:
                 self.output.insert(tk.END, "Шляхи не знайдено.\n")
             else:
                 for i, (cost, path) in enumerate(result, start=1):
-                    self.output.insert(tk.END, f"{i}-й шлях: {' -> '.join(path)}\n   Довжина = {cost}\n")
+                    self.output.insert(tk.END, f"{i}-й шлях: {' - '.join(path)}\n   Довжина = {cost}\n")
         except Exception as e:
             messagebox.showerror("Помилка", str(e))
 
@@ -220,7 +218,7 @@ class SimpleGraphUI:
             else:
                 for i, cycle in enumerate(cycles, start=1):
                     # Додаємо перший елемент в кінець для замкненості
-                    path_str = " -> ".join(map(str, cycle)) + " -> " + str(cycle[0])
+                    path_str = " -> ".join(map(str, cycle)) + " - " + str(cycle[0])
                     self.output.insert(tk.END, f"{i}-й цикл: {path_str}\n")
         except Exception as e:
             messagebox.showerror("Помилка", str(e))
