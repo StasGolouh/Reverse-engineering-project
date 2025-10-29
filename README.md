@@ -70,7 +70,7 @@ project_root/
 ├── cycles.pyx                      # Реалізація пошуку циклів (Студент 2)
 ├── ui.py                          # Інтерфейс користувача (Студент 3)
 │
-├── sample_graphs.py               # Тестові графи
+├── test_graph_logic.py            # Тести
 ├── main.py                        # Простий UI для запуску алгоритмів
 │
 ├── README.md                     
