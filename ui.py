@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox, ttk
 
+
 class SimpleGraphUI:
     def __init__(self, callback_paths, callback_cycles):
         self.callback_paths = callback_paths
@@ -8,35 +9,27 @@ class SimpleGraphUI:
 
         self.root = tk.Tk()
         self.root.title("Графи: K шляхи та цикли")
-        self.root.geometry("550x700")  # Збільшимо розмір для комфорту
+        self.root.geometry("550x700")
         self.root.minsize(450, 600)
 
         # --- Налаштування стилю ---
-        # Використовуємо ttk (themed widgets) для кращого вигляду
         style = ttk.Style(self.root)
-
-        # Спробуємо встановити "тему" - 'vista', 'clam', 'alt', 'default'
-        # 'vista' добре виглядає на Windows
         try:
             style.theme_use('vista')
         except tk.TclError:
-            print("Тема 'vista' не знайдена, використовується тема за замовчуванням.")
+            print("Тема 'vista' не знайдена, використовується стандартна тема.")
             style.theme_use('default')
 
-        # Загальні налаштування шрифту та відступів
         style.configure('.', font=('Segoe UI', 10), padding=5)
         style.configure('TLabel', font=('Segoe UI', 11))
         style.configure('Header.TLabel', font=('Segoe UI', 13, 'bold'))
         style.configure('TButton', padding=(10, 5))
-
-        # Спеціальний стиль для кнопки видалення
         style.configure('Danger.TButton', foreground='red', font=('Segoe UI', 10, 'bold'))
 
-        # Головний контейнер з відступом
         main_frame = ttk.Frame(self.root, padding=15)
         main_frame.pack(fill=tk.BOTH, expand=True)
 
-        # --- 1. Секція: Додавання ребер ---
+        # --- 1. Додавання ребер ---
         lf_add = ttk.LabelFrame(main_frame, text=" 1. Додавання ребер ", padding=10)
         lf_add.pack(fill=tk.X, pady=(0, 10))
 
@@ -52,17 +45,14 @@ class SimpleGraphUI:
         self.weight_entry = ttk.Entry(lf_add, width=8)
         self.weight_entry.grid(row=1, column=2, padx=(0, 10), sticky='w')
 
-        # Додаємо пусту колонку, щоб "відштовхнути" кнопку вправо
         lf_add.grid_columnconfigure(3, weight=1)
-
         self.add_button = ttk.Button(lf_add, text="Додати ребро", command=self.add_edge)
         self.add_button.grid(row=1, column=4, sticky='e')
 
-        # --- 2. Секція: Список ребер ---
+        # --- 2. Список ребер ---
         lf_list = ttk.LabelFrame(main_frame, text=" 2. Список ребер ", padding=10)
         lf_list.pack(fill=tk.BOTH, expand=True, pady=10)
 
-        # Frame для Listbox + Scrollbar
         list_frame = ttk.Frame(lf_list)
         list_frame.pack(fill=tk.BOTH, expand=True)
 
@@ -70,11 +60,10 @@ class SimpleGraphUI:
         self.edges_listbox = tk.Listbox(list_frame,
                                         height=7,
                                         yscrollcommand=scrollbar.set,
-                                        font=('Consolas', 10),  # Моноширинний шрифт для списку
+                                        font=('Consolas', 10),
                                         selectbackground="#0078d4",
                                         selectforeground="white")
         scrollbar.config(command=self.edges_listbox.yview)
-
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.edges_listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
@@ -84,10 +73,9 @@ class SimpleGraphUI:
                                         style='Danger.TButton')
         self.remove_button.pack(pady=(10, 0), anchor='e')
 
-        # --- 3. Секція: Параметри пошуку ---
+        # --- 3. Параметри пошуку ---
         lf_params = ttk.LabelFrame(main_frame, text=" 3. Параметри пошуку ", padding=10)
         lf_params.pack(fill=tk.X, pady=10)
-
         lf_params.grid_columnconfigure((0, 1, 2), weight=1)
 
         ttk.Label(lf_params, text="Початок:").grid(row=0, column=0, sticky='w')
@@ -105,7 +93,7 @@ class SimpleGraphUI:
         self.k_entry.insert(0, "3")
         self.k_entry.grid(row=1, column=2, sticky='w')
 
-        # Контейнер для кнопок дій
+        # --- Кнопки ---
         buttons_frame = ttk.Frame(main_frame)
         buttons_frame.pack(fill=tk.X, pady=10)
         buttons_frame.grid_columnconfigure((0, 1), weight=1)
@@ -116,11 +104,10 @@ class SimpleGraphUI:
         self.cycles_button = ttk.Button(buttons_frame, text="Знайти всі цикли", command=self.on_find_cycles)
         self.cycles_button.grid(row=0, column=1, sticky='ew', padx=(5, 0))
 
-        # --- 4. Секція: Результат ---
+        # --- 4. Результат ---
         lf_output = ttk.LabelFrame(main_frame, text=" 4. Результат ", padding=10)
         lf_output.pack(fill=tk.BOTH, expand=True)
 
-        # Frame для Text + Scrollbar
         output_frame = ttk.Frame(lf_output)
         output_frame.pack(fill=tk.BOTH, expand=True)
 
@@ -129,44 +116,56 @@ class SimpleGraphUI:
                               height=10,
                               yscrollcommand=out_scrollbar.set,
                               font=('Consolas', 10),
-                              wrap=tk.WORD)  # Перенос слів
+                              wrap=tk.WORD)
         out_scrollbar.config(command=self.output.yview)
-
         out_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.output.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         self.edges = []
-
-        # Встановлюємо фокус на перше поле вводу
         self.from_entry.focus_set()
 
-    #
-    # --- ЛОГІКА (ЗАЛИШИЛАСЯ БЕЗ ЗМІН) ---
-    #
-
+    # --- Додавання ребра ---
     def add_edge(self):
         u = self.from_entry.get().strip()
         v = self.to_entry.get().strip()
         w = self.weight_entry.get().strip()
+
         if not u or not v or not w:
             messagebox.showwarning("Увага", "Заповніть усі поля!")
             return
+
+        if u == v:
+            messagebox.showerror("Помилка", "Початкова і кінцева вершини не можуть бути однаковими.")
+            return
+
+        try:
+            if u.lstrip('-').isdigit() and int(u) < 0:
+                messagebox.showerror("Помилка", f"Вершина '{u}' не може бути від’ємною.")
+                return
+            if v.lstrip('-').isdigit() and int(v) < 0:
+                messagebox.showerror("Помилка", f"Вершина '{v}' не може бути від’ємною.")
+                return
+        except ValueError:
+            pass
+
         try:
             w = float(w)
+            if w <= 0:
+                messagebox.showerror("Помилка", "Вага ребра має бути додатною (> 0).")
+                return
         except ValueError:
             messagebox.showerror("Помилка", "Вага має бути числом.")
             return
-        self.edges.append((u, v, w))
-        self.edges_listbox.insert(tk.END, f"{u} - {v} (вага={w})")
 
-        # Очищуємо поля
+        self.edges.append((u, v, w))
+        self.edges_listbox.insert(tk.END, f"{u} -- {v} (вага={w})")
+
         self.from_entry.delete(0, tk.END)
         self.to_entry.delete(0, tk.END)
         self.weight_entry.delete(0, tk.END)
-
-        # Повертаємо фокус на перше поле
         self.from_entry.focus_set()
 
+    # --- Видалення ребра ---
     def remove_edge(self):
         sel = self.edges_listbox.curselection()
         if sel:
@@ -174,22 +173,45 @@ class SimpleGraphUI:
             self.edges.pop(index)
             self.edges_listbox.delete(index)
 
+    # --- Пошук шляхів ---
     def on_submit(self):
         start = self.start_entry.get().strip()
         end = self.end_entry.get().strip()
+
         try:
             K = int(self.k_entry.get().strip())
+            if K <= 0:
+                messagebox.showerror("Помилка", "K має бути додатним числом (> 0).")
+                return
         except ValueError:
-            messagebox.showerror("Помилка", "K має бути числом")
+            messagebox.showerror("Помилка", "K має бути числом.")
             return
 
-        if not start:
-            messagebox.showwarning("Увага", "Введіть початковий вузол.")
-            self.start_entry.focus_set()
+        if not start or not end:
+            messagebox.showwarning("Увага", "Введіть початкову та кінцеву вершини.")
             return
-        if not end:
-            messagebox.showwarning("Увага", "Введіть кінцевий вузол.")
-            self.end_entry.focus_set()
+
+        try:
+            if start.lstrip('-').isdigit() and int(start) < 0:
+                messagebox.showerror("Помилка", f"Початкова вершина '{start}' не може бути від’ємною.")
+                return
+            if end.lstrip('-').isdigit() and int(end) < 0:
+                messagebox.showerror("Помилка", f"Кінцева вершина '{end}' не може бути від’ємною.")
+                return
+        except ValueError:
+            pass
+
+        vertices = set()
+        for u, v, _ in self.edges:
+            vertices.add(u)
+            vertices.add(v)
+
+        if start not in vertices:
+            messagebox.showerror("Помилка", f"Початкової точки '{start}' немає в графі.")
+            return
+
+        if end not in vertices:
+            messagebox.showerror("Помилка", f"Кінцевої точки '{end}' немає в графі.")
             return
 
         try:
@@ -200,10 +222,11 @@ class SimpleGraphUI:
                 self.output.insert(tk.END, "Шляхи не знайдено.\n")
             else:
                 for i, (cost, path) in enumerate(result, start=1):
-                    self.output.insert(tk.END, f"{i}-й шлях: {' - '.join(path)}\n   Довжина = {cost}\n")
+                    self.output.insert(tk.END, f"{i}-й шлях: {' -- '.join(path)}\n   Довжина = {cost}\n")
         except Exception as e:
             messagebox.showerror("Помилка", str(e))
 
+    # --- Пошук циклів ---
     def on_find_cycles(self):
         if not self.edges:
             messagebox.showwarning("Увага", "Додайте хоча б одне ребро, щоб знайти цикли.")
